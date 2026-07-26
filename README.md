@@ -2,6 +2,10 @@
 
 For more information about libhmk, see the [libhmk repository](https://github.com/peppapighs/libhmk).
 
+## Features
+
+- **Combos** (firmware ≥ 1.9 / `0x0109`): chord 2–4 keys within a per-combo term to emit one result keycode. Configure from the Combos tab (also available in `/demo` without hardware). Pair with a matching [libhmk](https://github.com/tmyk-io/libhmk) firmware build.
+
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/en/)

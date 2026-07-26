@@ -35,6 +35,7 @@ import {
   saveCalibrationThreshold,
   setCalibration,
 } from "$lib/libhmk/commands/calibration"
+import { getCombos, setCombos } from "$lib/libhmk/commands/combos"
 import { factoryReset } from "$lib/libhmk/commands/factory-reset"
 import { firmwareVersion } from "$lib/libhmk/commands/firmware-version"
 import {
@@ -62,6 +63,7 @@ import type {
   DuplicateProfileParams,
   GetActuationMapParams,
   GetAdvancedKeysParams,
+  GetCombosParams,
   GetGamepadButtonsParams,
   GetGamepadOptionsParams,
   GetKeymapParams,
@@ -72,6 +74,7 @@ import type {
   SetActuationMapParams,
   SetAdvancedKeysParams,
   SetCalibrationParams,
+  SetCombosParams,
   SetGamepadButtonsParams,
   SetGamepadOptionsParams,
   SetKeymapParams,
@@ -204,6 +207,12 @@ class HMKKeyboard implements Keyboard {
   }
   setMacros(params: SetMacrosParams) {
     return setMacros(this.version, this.commander, params)
+  }
+  getCombos(params: GetCombosParams) {
+    return getCombos(this.version, this.commander, this.metadata, params)
+  }
+  setCombos(params: SetCombosParams) {
+    return setCombos(this.version, this.commander, params)
   }
 }
 

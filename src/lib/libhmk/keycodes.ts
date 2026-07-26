@@ -199,6 +199,9 @@ export enum Keycode {
   SP_PROFILE_SWAP = 0xd2,
   SP_PROFILE_NEXT = 0xd3,
   SP_BOOT = 0xd4,
+  SP_COMBO_ON = 0xd5,
+  SP_COMBO_OFF = 0xd6,
+  SP_COMBO_TOGGLE = 0xd7,
 
   XXXXXXX = KC_NO,
   _______ = KC_TRANSPARENT,

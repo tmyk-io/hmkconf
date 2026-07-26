@@ -23,6 +23,7 @@ import { globalStateContext } from "../context.svelte"
 import { actuationQueryContext } from "./actuation-query.svelte"
 import { advancedKeysQueryContext } from "./advanced-keys-query.svelte"
 import { calibrationQueryContext } from "./calibration.query.svelte"
+import { combosQueryContext } from "./combos-query.svelte"
 import { gamepadQueryContext } from "./gamepad-query.svelte"
 import { keymapQueryContext } from "./keymap-query.svelte"
 import { optionsQueryContext } from "./options-query.svelte"
@@ -41,6 +42,7 @@ export class ProfileQuery {
   #keymapQuery = keymapQueryContext.get()
   #actuationQuery = actuationQueryContext.get()
   #advancedKeysQuery = advancedKeysQueryContext.get()
+  #combosQuery = combosQueryContext.get()
   #gamepadQuery = gamepadQueryContext.get()
   #tickRateQuery = tickRateQueryContext.get()
 
@@ -59,6 +61,7 @@ export class ProfileQuery {
     this.#keymapQuery.keymap.refetch()
     this.#actuationQuery.actuationMap.refetch()
     this.#advancedKeysQuery.advancedKeys.refetch()
+    this.#combosQuery.combos.refetch()
     this.#gamepadQuery.gamepadButtons.refetch()
     this.#gamepadQuery.gamepadOptions.refetch()
     this.#tickRateQuery.tickRate.refetch()

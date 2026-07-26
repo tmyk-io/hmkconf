@@ -68,9 +68,9 @@ typedef struct __attribute__((packed)) {
 
 ### Protocol
 
-| ID | Name | Notes |
-|----|------|--------|
-| 142 | `COMMAND_GET_COMBOS` | Staged read like macros/AK |
+| ID  | Name                 | Notes                                    |
+| --- | -------------------- | ---------------------------------------- |
+| 142 | `COMMAND_GET_COMBOS` | Staged read like macros/AK               |
 | 143 | `COMMAND_SET_COMBOS` | Staged write; on success `combo_clear()` |
 
 Metadata JSON field: `numCombos` (from `keyboard.num_combos`).
@@ -143,12 +143,14 @@ Mirror in hmkconf keycode metadata (can hide from picker until implemented, but 
 **Objective:** Introduce `combo_t`, `NUM_COMBOS`, version bumps, and board metadata without runtime behavior yet.
 
 **Files:**
+
 - Modify: `include/common.h`, `include/eeconfig.h`, `include/keycodes.h`
 - Modify: `scripts/schema/keyboard.py`, `scripts/make.py`, `scripts/metadata.py`
 - Modify: `keyboards/he16/keyboard.json`, `keyboards/he60/keyboard.json`, `keyboards/he60-v2/keyboard.json`, `keyboards/m256-whe/keyboard.json`
 - Modify: `src/eeconfig.c`, `src/migration.c`
 
 **Interfaces:**
+
 - Consumes: existing `eeconfig_profile_t` layout, migration pattern `v1_5_*`
 - Produces: `combo_t`, `NUM_COMBOS`, `EECONFIG_VERSION 0x0106`, `FIRMWARE_VERSION 0x0109`, metadata `numCombos`
 
@@ -239,9 +241,11 @@ git commit -m "feat(combo): add combo_t storage, num_combos, eeconfig v1.6"
 **Objective:** Expose staged read/write of the combos array.
 
 **Files:**
+
 - Modify: `include/commands.h`, `src/commands.c`
 
 **Interfaces:**
+
 - Consumes: `combo_t`, `NUM_COMBOS`, staged profile helpers
 - Produces: `COMMAND_GET_COMBOS = 142`, `COMMAND_SET_COMBOS = 143`; on successful SET call `combo_clear()` (stub ok until Task 3)
 
@@ -282,10 +286,12 @@ git commit -m "feat(combo): add GET/SET_COMBOS HID commands"
 **Objective:** Implement buffering, adaptive longest-match, hold-until-break, and failure flush.
 
 **Files:**
+
 - Create: `include/combo.h`, `src/combo.c`
 - Modify: `src/layout.c`, `src/main.c` (if init ownership requires)
 
 **Interfaces:**
+
 - Consumes: `CURRENT_PROFILE.combos`, matrix press state, `layout_register`/`unregister`, `deferred_action_push` for taps
 - Produces:
   - `void combo_init(void);`
@@ -376,6 +382,7 @@ git commit -m "feat(combo): implement combo detection, adaptive fire, flush"
 **Objective:** Document the feature for humans.
 
 **Files:**
+
 - Modify: `README.md`
 
 - [ ] **Step 1: Add Combo to feature list** — per-combo term, layer-scoped, max 4 keys, configurator support; note AK mutual exclusion.
@@ -392,11 +399,13 @@ git commit -m "docs: mention Combo feature"
 **Objective:** Speak `GET/SET_COMBOS` and parse `numCombos` / feature gate.
 
 **Files:**
+
 - Create: `src/lib/libhmk/combos.ts`, `src/lib/libhmk/commands/combos.ts`
 - Modify: `src/lib/libhmk/index.ts`, `commands/index.ts`, `keycodes.ts`
 - Modify: `src/lib/keyboard/metadata.ts`, `index.ts`, `hmk-keyboard.svelte.ts`, `demo-keyboard.svelte.ts`
 
 **Interfaces:**
+
 - Consumes: Shared Contract
 - Produces: `HMK_Combo`, `getCombos`/`setCombos`, `Keyboard.getCombos`/`setCombos`, demo storage
 
@@ -461,11 +470,13 @@ git commit -m "feat(combo): add combos protocol types and commands"
 **Objective:** Dedicated Combos tab to create/edit/delete combos with per-combo term.
 
 **Files:**
+
 - Create: `src/lib/configurator/combos/` (tab, menubar, keyboard highlight, main list, create flow, config panel, delete dialog)
 - Create: `src/lib/configurator/queries/combos-query.svelte.ts`
 - Modify: `lib/layout.ts`, `context.svelte.ts`, `configurator.svelte`
 
 **Interfaces:**
+
 - Consumes: `getCombos`/`setCombos`, advanced keys query (for AK exclusion), keymap optional for labels
 - Produces: user-editable combos persisted to device/demo
 
@@ -531,6 +542,7 @@ git commit -m "feat(combo): add Combos configurator tab"
 **Objective:** Align docs; note pairing `libhmk`/`hmkconf` at combos feature version.
 
 **Files:**
+
 - Modify: `hmkconf/README.md`
 - Modify: `libhmk/README.md` if pairing note needed
 
@@ -566,17 +578,17 @@ Expected: clean.
 
 ### Manual / hardware (when available)
 
-| # | Scenario | Expected |
-|---|----------|----------|
-| 1 | Combo `A+B→Esc`, tap both within term | Esc down/up with hold semantics; no A/B |
-| 2 | Press A, wait > term, no B | A registers after timeout |
-| 3 | Press A, release A before B | A taps; no stuck key |
-| 4 | Combos `A+B` and `A+B+C` | A+B+C within term → only longer result |
-| 5 | `A+B` complete and no longer candidate | Fires without waiting full term (adaptive) |
-| 6 | AK on key D; try combo including D | UI blocks; firmware ignores if forced |
-| 7 | Per-combo term 50 vs 200 on two combos | Independent timing |
-| 8 | Result `MO(1)` | Layer held while chord held; releases on first member up |
-| 9 | Profile switch mid-chord | No stuck HID; state cleared |
+| #   | Scenario                               | Expected                                                 |
+| --- | -------------------------------------- | -------------------------------------------------------- |
+| 1   | Combo `A+B→Esc`, tap both within term  | Esc down/up with hold semantics; no A/B                  |
+| 2   | Press A, wait > term, no B             | A registers after timeout                                |
+| 3   | Press A, release A before B            | A taps; no stuck key                                     |
+| 4   | Combos `A+B` and `A+B+C`               | A+B+C within term → only longer result                   |
+| 5   | `A+B` complete and no longer candidate | Fires without waiting full term (adaptive)               |
+| 6   | AK on key D; try combo including D     | UI blocks; firmware ignores if forced                    |
+| 7   | Per-combo term 50 vs 200 on two combos | Independent timing                                       |
+| 8   | Result `MO(1)`                         | Layer held while chord held; releases on first member up |
+| 9   | Profile switch mid-chord               | No stuck HID; state cleared                              |
 
 ## Risks, Tradeoffs, and Open Questions
 
@@ -590,21 +602,21 @@ Expected: clean.
 
 ## Dig Summary (frozen)
 
-| Topic | Decision |
-|-------|----------|
-| Core | Delayed normal keys on failure |
-| Storage | Separate combos table |
-| Shape | 4 keys, ≤32 slots (default 16), per-combo `term_ms`, layer |
-| AK | Mutually exclusive on same layer |
-| Overlap | Longest wins |
-| Timer | Adaptive |
-| Hold | Until any member releases |
-| Layer | Exact current layer |
-| Early release | Immediate cancel + tap/press replay |
-| Result | Full keycode set |
-| Ship | Firmware + Combos tab + demo |
-| Buffer | Only keys that can still form a candidate |
-| Layer change | Press snapshots |
-| MVP cut | No must_hold / CM_* behavior yet |
-| Reserve | `flags` + `SP_COMBO_ON/OFF/TOGGLE` |
-| Term UX | Per-combo only (no profile global) |
+| Topic         | Decision                                                   |
+| ------------- | ---------------------------------------------------------- |
+| Core          | Delayed normal keys on failure                             |
+| Storage       | Separate combos table                                      |
+| Shape         | 4 keys, ≤32 slots (default 16), per-combo `term_ms`, layer |
+| AK            | Mutually exclusive on same layer                           |
+| Overlap       | Longest wins                                               |
+| Timer         | Adaptive                                                   |
+| Hold          | Until any member releases                                  |
+| Layer         | Exact current layer                                        |
+| Early release | Immediate cancel + tap/press replay                        |
+| Result        | Full keycode set                                           |
+| Ship          | Firmware + Combos tab + demo                               |
+| Buffer        | Only keys that can still form a candidate                  |
+| Layer change  | Press snapshots                                            |
+| MVP cut       | No must_hold / CM_* behavior yet                           |
+| Reserve       | `flags` + `SP_COMBO_ON/OFF/TOGGLE`                         |
+| Term UX       | Per-combo only (no profile global)                         |

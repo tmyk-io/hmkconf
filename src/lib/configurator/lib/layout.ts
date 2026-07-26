@@ -14,6 +14,7 @@
  */
 
 import {
+  CombineIcon,
   CrosshairIcon,
   Gamepad2Icon,
   GaugeIcon,
@@ -22,6 +23,7 @@ import {
   SettingsIcon,
   SquareChevronUpIcon,
 } from "@lucide/svelte"
+import type { Feature } from "$lib/libhmk"
 import type { Component } from "svelte"
 import type { ConfiguratorTabs } from "../context.svelte"
 
@@ -34,6 +36,7 @@ export type SidebarTabGroup = {
     label: string
     value: ConfiguratorTabs
     icon: Component
+    feature?: Feature
   }[]
 }
 
@@ -51,6 +54,12 @@ export const sidebarTabGroups: SidebarTabGroup[] = [
         label: "Advanced Keys",
         value: "advanced-keys",
         icon: SquareChevronUpIcon,
+      },
+      {
+        label: "Combos",
+        value: "combos",
+        icon: CombineIcon,
+        feature: "combos",
       },
       { label: "Gamepad", value: "gamepad", icon: Gamepad2Icon },
       { label: "Calibration", value: "calibration", icon: CrosshairIcon },

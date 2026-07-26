@@ -28,14 +28,14 @@ Real connect on `/` needs WebHID (`navigator.hid`) and a Chromium-based browser 
 
 ## Important paths
 
-| Path | Role |
-|------|------|
-| `src/routes/` | Pages (`/` connect, `/demo` hardware-free) |
-| `src/lib/configurator/` | Configurator UI (remap, actuation, advanced keys, gamepad, …) |
-| `src/lib/keyboard/` | `HMKKeyboard`, `DemoKeyboard`, HID commander |
-| `src/lib/libhmk/` | Protocol types and commands |
-| `src/lib/components/ui/` | shadcn-svelte primitives |
-| `wrangler.jsonc` | Cloudflare Workers config |
+| Path                     | Role                                                          |
+| ------------------------ | ------------------------------------------------------------- |
+| `src/routes/`            | Pages (`/` connect, `/demo` hardware-free)                    |
+| `src/lib/configurator/`  | Configurator UI (remap, actuation, advanced keys, gamepad, …) |
+| `src/lib/keyboard/`      | `HMKKeyboard`, `DemoKeyboard`, HID commander                  |
+| `src/lib/libhmk/`        | Protocol types and commands                                   |
+| `src/lib/components/ui/` | shadcn-svelte primitives                                      |
+| `wrangler.jsonc`         | Cloudflare Workers config                                     |
 
 ## Notes
 

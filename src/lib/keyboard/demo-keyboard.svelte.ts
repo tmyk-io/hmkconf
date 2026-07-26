@@ -21,12 +21,14 @@ import {
   defaultAdvancedKey,
   type HMK_AdvancedKey,
 } from "$lib/libhmk/advanced-keys"
+import { defaultCombo, type HMK_Combo } from "$lib/libhmk/combos"
 import { HMK_GamepadButton, type HMK_GamepadOptions } from "$lib/libhmk/gamepad"
 import { defaultMacroNode, type HMK_MacroNode } from "$lib/libhmk/macro"
 import type {
   DuplicateProfileParams,
   GetActuationMapParams,
   GetAdvancedKeysParams,
+  GetCombosParams,
   GetGamepadButtonsParams,
   GetGamepadOptionsParams,
   GetKeymapParams,
@@ -36,6 +38,7 @@ import type {
   ResetProfileParams,
   SetActuationMapParams,
   SetAdvancedKeysParams,
+  SetCombosParams,
   SetGamepadButtonsParams,
   SetGamepadOptionsParams,
   SetKeymapParams,
@@ -51,6 +54,7 @@ const {
   numKeys,
   numAdvancedKeys,
   numMacroNodes,
+  numCombos,
   defaultKeymaps,
 } = demoMetadata
 
@@ -59,6 +63,7 @@ type DemoKeyboardProfileState = {
   actuationMap: HMK_Actuation[]
   advancedKeys: HMK_AdvancedKey[]
   macros: HMK_MacroNode[]
+  combos: HMK_Combo[]
   gamepadButtons: number[]
   gamepadOptions: HMK_GamepadOptions
   tickRate: number
@@ -70,6 +75,7 @@ function defaultProfile(profile: number): DemoKeyboardProfileState {
     actuationMap: Array(numKeys).fill(defaultActuation),
     advancedKeys: Array(numAdvancedKeys).fill(defaultAdvancedKey),
     macros: Array(numMacroNodes).fill(defaultMacroNode),
+    combos: Array(numCombos).fill(defaultCombo),
     gamepadButtons: Array(numKeys).fill(HMK_GamepadButton.NONE),
     gamepadOptions: {
       analogCurve: analogCurvePresets[0].curve,
@@ -192,6 +198,14 @@ export class DemoKeyboard implements Keyboard {
   async setMacros({ profile, offset, data }: SetMacrosParams) {
     for (let i = 0; i < data.length; i++) {
       this.#state.profiles[profile].macros[offset + i] = data[i]
+    }
+  }
+  async getCombos({ profile }: GetCombosParams) {
+    return this.#state.profiles[profile].combos
+  }
+  async setCombos({ profile, offset, data }: SetCombosParams) {
+    for (let i = 0; i < data.length; i++) {
+      this.#state.profiles[profile].combos[offset + i] = data[i]
     }
   }
 }
