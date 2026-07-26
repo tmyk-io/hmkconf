@@ -27,6 +27,7 @@ import {
   CalibrationQuery,
   calibrationQueryContext,
 } from "./calibration.query.svelte"
+import { CombosQuery, combosQueryContext } from "./combos-query.svelte"
 import { GamepadQuery, gamepadQueryContext } from "./gamepad-query.svelte"
 import { KeymapQuery, keymapQueryContext } from "./keymap-query.svelte"
 import { MacrosQuery, macrosQueryContext } from "./macros-query.svelte"
@@ -62,6 +63,7 @@ export function setConfiguratorQueryContext() {
   actuationQueryContext.set(new ActuationQuery())
   advancedKeysQueryContext.set(new AdvancedKeysQuery())
   macrosQueryContext.set(new MacrosQuery())
+  combosQueryContext.set(new CombosQuery())
   gamepadQueryContext.set(new GamepadQuery())
   tickRateQueryContext.set(new TickRateQuery())
   // Profile query depends on all other queries.

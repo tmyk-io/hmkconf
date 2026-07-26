@@ -48,6 +48,8 @@ export enum HMK_Command {
   SET_GAMEPAD_OPTIONS,
   GET_MACROS,
   SET_MACROS,
+  GET_COMBOS,
+  SET_COMBOS,
 
   UNKNOWN = 255,
 }

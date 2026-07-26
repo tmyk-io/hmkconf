@@ -16,6 +16,7 @@
 import type { HMK_Calibration, HMK_Options } from "$lib/libhmk"
 import type { HMK_Actuation } from "$lib/libhmk/actuation"
 import type { HMK_AdvancedKey } from "$lib/libhmk/advanced-keys"
+import type { HMK_Combo } from "$lib/libhmk/combos"
 import type { HMK_AnalogInfo } from "$lib/libhmk/commands"
 import type { HMK_GamepadOptions } from "$lib/libhmk/gamepad"
 import type { HMK_MacroNode } from "$lib/libhmk/macro"
@@ -49,6 +50,9 @@ export type SetTickRateParams = SetProfileParams<number>
 
 export type GetMacrosParams = GetProfileParams
 export type SetMacrosParams = SetProfileArrayParams<HMK_MacroNode>
+
+export type GetCombosParams = GetProfileParams
+export type SetCombosParams = SetProfileArrayParams<HMK_Combo>
 
 export type GetGamepadButtonsParams = GetProfileParams
 export type SetGamepadButtonsParams = SetProfileArrayParams<number>
@@ -96,6 +100,8 @@ export type KeyboardAction = {
   setGamepadOptions(params: SetGamepadOptionsParams): Promise<void>
   getMacros(params: GetMacrosParams): Promise<HMK_MacroNode[]>
   setMacros(params: SetMacrosParams): Promise<void>
+  getCombos(params: GetCombosParams): Promise<HMK_Combo[]>
+  setCombos(params: SetCombosParams): Promise<void>
 }
 
 export type Keyboard = KeyboardState & KeyboardAction

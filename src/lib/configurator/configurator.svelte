@@ -26,6 +26,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   const remapTab = import("./remap/remap-tab.svelte")
   const performanceTab = import("./performance/performance-tab.svelte")
   const advancedKeysTab = import("./advanced-keys/advanced-keys-tab.svelte")
+  const combosTab = import("./combos/combos-tab.svelte")
   const gamepadTab = import("./gamepad/gamepad-tab.svelte")
   const calibrationTab = import("./calibration/calibration-tab.svelte")
   const settingsTab = import("./settings/settings-tab.svelte")
@@ -62,6 +63,13 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     <Tabs.Content value="advanced-keys">
       {#snippet child({ props })}
         <AdvancedKeysTab {...props} />
+      {/snippet}
+    </Tabs.Content>
+  {/await}
+  {#await combosTab then { default: CombosTab }}
+    <Tabs.Content value="combos">
+      {#snippet child({ props })}
+        <CombosTab {...props} />
       {/snippet}
     </Tabs.Content>
   {/await}

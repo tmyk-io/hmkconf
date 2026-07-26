@@ -109,6 +109,48 @@ export class ConfiguratorAdvancedKeysState {
 export const advancedKeysStateContext =
   new Context<ConfiguratorAdvancedKeysState>("hmk-advanced-keys-state")
 
+export class ConfiguratorCombosState {
+  layer = $state(0)
+  index: number | null = $state(null)
+  create: { keys: number[] } | null = $state(null)
+
+  reset() {
+    this.layer = 0
+    this.index = null
+    this.create = null
+  }
+  setLayer(layer: number) {
+    this.layer = layer
+    this.index = null
+    this.create = null
+  }
+  setIndex(index: number | null) {
+    this.index = index
+    this.create = null
+  }
+  createOpen() {
+    this.create = { keys: [] }
+    this.index = null
+  }
+  createClose() {
+    this.create = null
+    this.index = null
+  }
+  createToggleKey(key: number) {
+    if (!this.create) return
+    const index = this.create.keys.indexOf(key)
+    if (index !== -1) {
+      this.create.keys = this.create.keys.filter((_, i) => i !== index)
+    } else if (this.create.keys.length < 4) {
+      this.create.keys = [...this.create.keys, key]
+    }
+  }
+}
+
+export const combosStateContext = new Context<ConfiguratorCombosState>(
+  "hmk-combos-state",
+)
+
 export type ConfiguratorGamepadTabs = "setup" | "analog"
 
 export class ConfiguratorGamepadState {
@@ -134,6 +176,7 @@ export type ConfiguratorTabs =
   | "remap"
   | "performance"
   | "advanced-keys"
+  | "combos"
   | "gamepad"
   | "calibration"
   | "settings"
@@ -145,12 +188,14 @@ export class ConfiguratorGlobalState {
   #remapState: ConfiguratorRemapState
   #performanceState: ConfiguratorPerformanceState
   #advancedKeysState: ConfiguratorAdvancedKeysState
+  #combosState: ConfiguratorCombosState
   #gamepadState: ConfiguratorGamepadState
 
   constructor() {
     this.#remapState = remapStateContext.get()
     this.#performanceState = performanceStateContext.get()
     this.#advancedKeysState = advancedKeysStateContext.get()
+    this.#combosState = combosStateContext.get()
     this.#gamepadState = gamepadStateContext.get()
   }
 
@@ -159,6 +204,7 @@ export class ConfiguratorGlobalState {
     this.#remapState.reset()
     this.#performanceState.reset()
     this.#advancedKeysState.reset()
+    this.#combosState.reset()
     this.#gamepadState.reset()
   }
 }
@@ -301,6 +347,7 @@ export function setConfiguratorStateContext() {
   remapStateContext.set(new ConfiguratorRemapState())
   performanceStateContext.set(new ConfiguratorPerformanceState())
   advancedKeysStateContext.set(new ConfiguratorAdvancedKeysState())
+  combosStateContext.set(new ConfiguratorCombosState())
   gamepadStateContext.set(new ConfiguratorGamepadState())
   // Global state depends on all other states.
   globalStateContext.set(new ConfiguratorGlobalState())
